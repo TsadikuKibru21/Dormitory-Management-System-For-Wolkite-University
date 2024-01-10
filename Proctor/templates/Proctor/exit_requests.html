@@ -1,0 +1,35 @@
+{% extends 'Proctor/base.html'%}
+
+{% block content %}
+<h1>Exit Permission Requests</h1>
+<form action="" method="post">
+    {%csrf_token%}
+<div class="table-responsive">
+<table class="table table-sm table-bordered" data-page-length='100'>
+    <thead class="thead-light">
+        <tr>  
+            <th scope="col">Student_ID</th>
+            <th scope="col">Requests</th>
+            <th scope="col">Date</th>
+            <th scope="col">Permission</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in result %}
+    <tr>
+        <td > {{i.student}}</td>
+        <td > {{i.materials}}</td>
+        <td > {{i.date}}</td>
+        <td > 
+            <a class="btn btn-success"  href="{% url 'accept_exit_request' i.id %}" role="button"><i class="fas fa-pen"></i> Accept</a>
+            <a class="btn btn-danger" href="{% url 'decline_request' i.id %}" role="button" onclick="return confirm('Are you sure you want to delete?')"><i class="fas fa-trash-alt"></i> Decline</a>
+        </td>
+        </tr>
+    {% endfor%}
+
+</tbody>
+</table>
+</div>
+</form>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "Sdeanindex.html"%}
+
+{% block content%}
+ <h1>view Employee</h1>
+ <div class="table-responsive">
+    <table id="Dorm" class="table table-hover">
+       <thead>
+           <tr>  
+               <th scope="col">First Name</th>
+               <th scope="col">Last Name</th>
+               <th scope="col">Id Number</th>
+               <th scope="col">Role</th>
+               <th scope="col">Manage</th>
+               
+           </tr>
+       </thead>
+       <tbody>
+           {% for result in result %}
+       <tr>
+           <td>{{result.item1.FirstName}}</td>
+           <td>{{result.item1.LastName}}</td>
+           <td>{{result.item1.Id_no}}</td>
+           <td>{{result.item2}}</td>
+           <td>
+               <a class="btn btn-success" href="{% url 'S_update_employee' result.item1.id %}" role="button"><i class="fas fa-pen"></i> Edit</a>
+               <a class="btn btn-danger" href="{% url 'S_delete_employee' result.item1.id %}" role="button" onclick="return confirm('Are you sure you want to delete?')"><i class="fas fa-trash-alt"></i> Remove</a>
+           </td>               
+       </tr>
+       {% endfor%}
+   </tbody>
+   </table>
+   </div>
+{% endblock%}
+{% block morejs %}
+ <script>
+   $('#Dorm').DataTable({
+     "ordering": false
+   });
+ </script>
+ {% endblock morejs %}

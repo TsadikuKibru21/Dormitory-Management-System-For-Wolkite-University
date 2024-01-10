@@ -1,0 +1,62 @@
+
+
+
+{% extends 'Student/base.html' %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <style>
+        #bg {
+            /* The image used */
+            background-image: url("/static/images/wku2.jpg");
+            /* Full height */
+            height: 100%; 
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+          #div {
+  width: 700px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin-top: 0;
+}
+#div1 {
+  width: 700px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin-top: 100px;
+}
+ 
+    </style>
+    <title>WKU_STUDENTS</title>
+</head>
+<body id="bg">
+
+
+  
+    <center style="margin-top: 70px;">
+        
+        <br><br><h1 class="p-0 m-0 text-uppercase"> WOLKITE UNIVERSITY <br> DORMITORY INFORMATION</h1><br>
+        
+</center>
+
+  
+  <center   style="margin-top: 30px;">
+  {% if messages %}
+  {% for message in messages %}
+    <h3>{{message}}</h3>
+  {% endfor %}
+  {% endif %}
+<h1>Name:- {{Firstname}} {{Lastname}}</h1>
+<h1>Block:- <span style="color: darkred;">{{Block}}</span></h1>
+<h1>Dorm:- <span style="color: darkred;">{{Dorm}}</span></h1>
+</center>
+
+</body>
+</html>
+{% endblock content %}
+

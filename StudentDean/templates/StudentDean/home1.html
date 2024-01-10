@@ -1,0 +1,79 @@
+{% extends "Sdeanindex.html"%}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/');
+
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        const message = data['message'];
+        const senderId = data['sender_id'];
+
+        // Process and display the received message
+        const chatMessage = `
+          <div class="card w-100">
+            <div class="card-header d-flex justify-content-between p-3">
+              <p class="fw-bold mb-0">User ${senderId}</p>
+              <p class="text-muted small mb-0"><i class="far fa-clock"></i> Just now</p>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">${message}</p>
+            </div>
+          </div>
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-${senderId}.webp" alt="avatar"
+            class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+        `;
+
+        $('.chat-messages').append(chatMessage);
+      };
+
+      chatSocket.onclose = function (e) {
+        // Handle WebSocket connection close
+        console.error('Chat socket closed unexpectedly');
+      };
+
+      // Send a message to the server
+      function sendMessage(recipientId) {
+        const message = $('#textAreaExample2').val();
+        chatSocket.send(JSON.stringify({
+          'recipient': recipientId,
+          'message': message
+        }));
+        $('#textAreaExample2').val('');
+      }
+
+      // Example usage:
+      const recipientId = 8;  // ID of the recipient user
+
+      $('#sendButton').click(function() {
+        sendMessage(recipientId);
+      });
+    });
+  </script>
+  <style>
+    /* Add your custom styles here */
+  </style>
+</head>
+<body>
+  <section style="background-color: #eee;">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
+          <h5 class="font-weight-bold mb-3 text-center text-lg-start">Member</h5>
+          <div class="card">
+            <div class="card-body">
+              <ul class="list-unstyled mb-0">
+                <li class="p-2 border-bottom" style="background-color: #eee;">
+                  <a href="#!" class="d-flex justify-content-between">
+                    <div class="d-flex flex-row">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar"
+                        class="rounded-circle d-flex align-self-center me-3
+
+{% endblock %}

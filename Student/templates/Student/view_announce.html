@@ -1,0 +1,83 @@
+{% extends 'Student/base.html' %}
+{% block content%}
+{% if messages %}
+{% for message in messages %}
+  {{message}}
+{% endfor %}
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <style>
+        #bg {
+            /* The image used */
+            background-image: url("/static/images/wku2.jpg");
+            /* Full height */
+            height: 100%; 
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+          #div {
+  width: 700px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+}
+#div1 {
+  width: 700px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+}
+ 
+    </style>
+    <title>WKU_STUDENTS</title>
+</head>
+<body id="bg">
+
+   <!-- Navbar -->
+   
+  
+    <center style="margin-top: 70px;">
+        <div id="div1" style="background-color: aliceblue;">
+        <br><br><h1 class="p-0 m-0 text-uppercase"> WOLKITE UNIVERSITY <br> Annoucement</h1><br>
+        </div>
+</center>
+
+  
+  <center   style="margin-top: 30px;">
+
+    <div id="div" style="background-color: aliceblue;">
+      <div class="table-responsive">
+ <table id="Dorm" class="table table-hover">
+    <thead>
+        <tr>  
+            <th scope="col">Content</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for ss in announce %}
+    <tr>
+      <th scope="row">{{ss.Content}}</th>
+      {% if ss.Image %}
+      <td scope="row"><a href="{{ss.Image.url}}">{{ss.Image}}</a></td>
+    
+      {% endif %}
+    </tr>
+    {% endfor%}
+</tbody>
+</table>
+
+  </div>
+
+
+</div>
+</center>
+
+</body>
+</html> 
+{% endblock content%}

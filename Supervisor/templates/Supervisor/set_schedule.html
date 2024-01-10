@@ -1,0 +1,16 @@
+{% extends 'Supervisor/base.html'%}
+
+{% block content %}
+<h1 style="text-align: center;">Set Proctor Schedule</h1>
+<form action="" method="post">
+    {% csrf_token%}
+     <label for=""> <h4>Start Date</h4></label>
+     <input type="date" class="form-control" name="startdate" required>
+     <label for=""><h4>End Date</h4></label>
+     <input type="date" class="form-control" name="enddate" required><br>
+     <label for=""><h4>Number of Shifts/Day</h4></label>
+     <input type="number" class="form-control" name="no_shifts" required><br>
+     <button type="submit" class="btn btn-primary">Set Schedule</button>
+     
+</form>
+{% endblock %}

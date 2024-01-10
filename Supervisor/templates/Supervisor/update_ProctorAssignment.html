@@ -1,0 +1,21 @@
+{% extends "Supervisor/base.html"%}
+
+
+
+{% block content%}
+    <h1>Update Dorm of the Proctor</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+    <label for="">Proctor Name</label><br>
+    <input type="text" class="form-control" value="{{name}}" readonly>
+    <label for="">Block:</label><br>
+    <select class="form-control" aria-label="Default select example" name="block"required >
+    <option value="{{currentB}}"> {{currentB}}</option>
+        {% for block in Block %}
+    <option value="{{block.Block_name}}"> {{block.Block_name}}</option>
+    {% endfor %}
+ </select>
+ <br>
+ <button type="submit" class="btn btn-primary"><i class="fa fa-pen" aria-hidden="true"></i> Update</button>
+</form>
+ {% endblock %}

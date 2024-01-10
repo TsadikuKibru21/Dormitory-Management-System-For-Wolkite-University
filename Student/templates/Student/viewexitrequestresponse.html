@@ -1,0 +1,63 @@
+{% extends 'Student/base.html' %}
+{% block content%}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <style>
+        #bg {
+            /* The image used */
+            background-image: url("/static/images/wku2.jpg");
+            /* Full height */
+            height: 100%; 
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+          #div {
+  width: 700px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin-top: 0;
+}
+#div1 {
+  width: 700px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin-top: 100px;
+}
+ 
+    </style>
+    <title>WKU_STUDENTS</title>
+</head>
+<body id="bg">
+
+
+  
+    <center style="margin-top: 70px;">
+        
+        <br><br><h1 class="p-0 m-0 text-uppercase"> EXIT PERMISSION INFORMATION</h1><br>
+        
+</center>
+
+  
+<center   style="margin-top: 30px;">
+{% if material %}
+
+ <h1>Student Name: {{name}}</h1>
+<br>
+<h1>Materials Permitted to Take:</h1>
+        <h1>->{{material}}</h1>
+{% else%}
+<h1>You have No Permission to Take Materials Today</h1>
+{% endif %}
+</center>
+
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,73 @@
+{% extends "chat/Base.html" %}
+{% load static %}
+
+{% block  content %}
+
+        <div>
+        <div class="messages wrapper" id="board">
+            {% block message %}
+            {% endblock %}
+        </div>
+
+        <div style="width: 900px;"id="board">
+            <form method="post"  id="chat-box">
+              {% csrf_token %}
+              <div class="input-group mb-2" style="display: flex;">
+                <input type="text" placeholder="Send a message..." name="message" id="msg_field" class="form-control" style="flex: 1;">
+                <button type="submit" name="send" class="btn btn-success" id="send_btn">Send</button>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+    <script>
+        var messageBody = document.querySelector('.messages');
+        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+        sender_id = "{{ friend.id }}";
+        receiver_id = "{{ curr_user.id }}";
+
+        function scrolltoend() {
+            $('#board').stop().animate({
+                scrollTop: $('#board')[0].scrollHeight
+            }, 800);
+         }
+
+        const text_box =  '<ul><li class="d-flex justify-content-between mb-4">'
+            + '<i class="fa-sharp fa-solid fa-inbox-out"></i>' +
+            '<div class="card w-50">' +
+            '<div class="card-header d-flex justify-content-between p-3">' +
+            '<p class="fw-bold mb-0"></p>'+
+            '<p class="text-muted small mb-0"><i class="far fa-clock"></i>{{message.time}}</p>'+
+            '</div>'+
+            '<div class="card-body">'+
+            '<p class="mb-0">{description}</p>'+
+            '</div></div></li></ul>'
+        
+
+        //For sending
+        $(function () {
+            $('#chat-box').on('submit', function (event) {
+                event.preventDefault();
+                var message = $('#msg_field');
+                send('{{ curr_user.username }}', '{{ friend.username }}', message.val());
+                message.val('');
+            })
+        })
+
+        function send(sender, receiver, message){
+
+            $.post('/api/messages', '{"sender_name": "' + sender + '", "receiver_name": "' +
+                    receiver + '","description": "' + message + '" }', function (data) {
+                var field = text_box.replace('{description}', message);
+                var today = new Date();
+                var time = today.getHours() + ":" + today.getMinutes()
+                field = field.replace('{time}', time)
+                $('#board').append(field);
+                scrolltoend();
+            })
+        }
+
+    </script>
+
+{% endblock %}

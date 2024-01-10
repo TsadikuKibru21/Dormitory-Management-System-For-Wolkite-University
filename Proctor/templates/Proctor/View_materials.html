@@ -1,0 +1,45 @@
+{% extends 'Proctor/base.html'%}
+{% block breadcrumb %}
+  <form action="{% url 'search_material' %}" class="d-flex" method="POST">
+    {% csrf_token %}
+    <input type="search" placeholder="Search Property by Dorm" name="searched">
+    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search" ></i></button>
+  </form>
+  {% endblock breadcrumb %}
+{% block content%}
+
+<h1>view materials</h1>
+   <form action="" method="post">
+    {%csrf_token%}
+<div class="table-responsive">
+<table class="table table-sm table-bordered" data-page-length='100'>
+    <thead class="thead-light">
+        <tr>  
+            <th scope="col">Property_Id</th>
+            <th scope="col">Property_name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Block</th>
+            <th scope="col">Dorm</th>
+            <th scope="col">Manage</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in result %}
+    <tr>
+        <td>{{i.item1.Property_id}}</td>
+        <td > {{i.item1.Propery_name}}</td>
+        <td > {{i.item1.property_category}}</td>
+        <td > {{Block}}</td>
+        <td > {{i.item2}}</td>
+        <td > 
+            <a class="btn btn-success"  href="{% url 'edit_material' i.item1.id %}" role="button"><i class="fas fa-pen"></i> Edit</a>
+            <a class="btn btn-danger" href="{% url 'delete_Materials' i.item1.id %}" role="button" onclick="return confirm('Are you sure you want to delete?')"><i class="fas fa-trash-alt"></i> Delete</a>
+        </td>
+        
+    {% endfor%}
+
+</tbody>
+</table>
+</div>
+</form>
+{%endblock%}

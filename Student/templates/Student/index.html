@@ -1,0 +1,133 @@
+{% extends 'Student/base.html' %}
+{% block content%}
+
+
+{% if messages %}
+{% for message in messages %}
+  
+  <script>
+    alert("{{message}}")
+  </script>
+{% endfor %}
+{% endif %}
+  
+  <!-- ======= hero Section ======= -->
+ 
+  <section id="hero">
+    <div class="hero-container">
+      <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+
+        <ol id="hero-carousel-indicators" class="carousel-indicators"></ol>
+
+        <div class="carousel-inner" role="listbox">
+          
+      
+          <div class="carousel-item active" style="background-image: url(assets/img/hero-carousel/1.jpg)">
+            <div class="carousel-container">
+              <div class="container">
+                <h2 class="animate__animated animate__fadeInDown">{{ slogan | default:"We Strive For Wisdom" }}</h2>
+                <p class="animate__animated animate__fadeInUp">{{ descrption1 | default:"Many of lifes failures are people who did not realize how close they were to success when they gave up. Thomas A. Edison" }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item" style="background-image: url(assets/img/hero-carousel/2.jpg)">
+            <div class="carousel-container">
+              <div class="container">
+                <h2 class="animate__animated animate__fadeInDown">{{slogan1 | default:"You Can Do it! keep Doing..."}}</h2>
+                <p class="animate__animated animate__fadeInUp">{{descrption2 |default:'"You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose." -Dr. Seuss'}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item" style="background-image: url(assets/img/hero-carousel/3.jpg)">
+            <div class="carousel-container">
+              <div class="container">
+                <h2 class="animate__animated animate__fadeInDown">{{ slogan2 |default:"Trust The Process"}}</h2>
+                <p class="animate__animated animate__fadeInUp">{{descrption3 | default:"Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. -Steve Jobs"}}</p>
+              </div>
+            </div>
+          </div>
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+        </a>
+
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+        </a>
+
+      </div>
+    </div>
+  </section><!-- End Hero Section -->
+
+  <main id="main">
+  
+   
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-7 footer-info">
+            <h3>{{ Abrevation_name | default:"WKU" }}_DMS</h3>
+            <h4>Dear Students You Must know and Follow the Following Dormitory Type Rules</h4>
+            <p>You Have To Keep Materials You Borrowed Properly. <br> You Have to Sign Attendace Before 4:00PM. <br>
+               You Don't Have To Disturb Other Students. <br> Respect any Dormitory Related and Other Rules and Regulations   </p>
+          </div>
+
+          
+
+          <div class="col-lg-3 col-md-8 footer-contact">
+            <h4>Contact Us</h4>
+            <p>
+             
+             Ethiopia, {{ location | default:" Gurage Wolkite" }} 
+              <br>
+              
+              <strong>Phone:</strong>{{ phone | default:"251 912 55 48 55" }} <br>
+              <strong>Email:</strong>{{ email | default:"exapmle@gmail.com" }} <br>
+            </p>
+
+            <div class="social-links">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-newsletter">
+            <h4>Our Newsletter</h4>
+            <p>There is ....</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong>{{ Abrevation_name | default:"WKU" }}</strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!--
+        All the links in the footer should remain intact.
+        You can delete the links only if you purchased the pro version.
+        Licensing information: https://bootstrapmade.com/license/
+        Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=BizPage
+      -->
+        Designed by <a href="#">{{ Abrevation_name | default:"WKU" }} Incubation Center</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+  {% endblock %}

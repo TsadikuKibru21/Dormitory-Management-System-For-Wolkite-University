@@ -1,0 +1,40 @@
+{% extends 'Proctor/base.html'%}
+
+{% block content%}
+
+<h1>view Problem</h1>
+
+
+   <form action="" method="post">
+    {%csrf_token%}
+<div class="table-responsive">
+<table class="table table-sm table-bordered" data-page-length='100'>
+    <thead class="thead-light">
+        <tr>  
+            <th scope="col">Student</th>
+           
+            <th scope="col">Problem</th>
+            <th scope="col">Date</th>
+            <th scope="col">Block</th>
+            <th scope="col">Dorm</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in Problem %}
+    <tr>
+        <td>{{i.item1.student}}</td>
+        <td > {{i.item1.problem}}</td>
+        <td > {{i.item1.date}}</td>
+        <td > {{i.item2.Block}}</td>
+        <td > {{i.item2.Room}}</td>
+        <td > {{i.item1.is_solve}}</td>
+ 
+        
+    {% endfor%}
+
+</tbody>
+</table>
+</div>
+</form>
+{%endblock%}

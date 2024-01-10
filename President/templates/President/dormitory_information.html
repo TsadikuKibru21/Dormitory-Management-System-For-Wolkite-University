@@ -1,0 +1,57 @@
+{% extends 'President/base.html'%}
+
+{% block content%}
+<center>
+<h1>Over All Dormitory Information</h1>
+</center>
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title font-weight-bold">Dorm Information</h3>
+            <p class="card-text">Males Dorm  = {{males_dorm}}</p>
+            <p class="card-text">Females Dorm  = {{females_dorm}}</p>
+            <p class="card-text">Total Dorm  = {{total_dorms}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title font-weight-bold">Placement Information</h5>
+            <p class="card-text">Male Placed Students  ={{placed_male}}</p>
+            <p class="card-text">Female Placed Students  ={{placed_female}}</p>
+            <p class="card-text">Total Placed Students  ={{total_Placed}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title font-weight-bold">Available Dorms</h5>
+            <p class="card-text">Males Available Dorms  ={{males_availabe_dorm}}</p>
+            <p class="card-text">Females Available Dorms  ={{females_available_dorm}}</p>
+            <p class="card-text">Total Available Dorms  ={{tota_available_dorm}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title font-weight-bold">Free Dorm Capacity</h5>
+            <p class="card-text">Males Free Dorm Capacity  ={{males_availabe_dorm_capacity}}</p>
+            <p class="card-text">Females Free Dorm Capacity  ={{females_available_dorm_capacity}}</p>
+            <p class="card-text">Total Free Dorm Capacity  ={{tota_available_dorm_capacity}}</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+{%endblock%}

@@ -1,0 +1,59 @@
+{% extends 'Proctor/base.html' %}
+
+{% block title%}
+<center>
+<h4>Register Materials</h4>
+</center>
+{% endblock title%}
+
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'upload_materials' %}"><i
+    class="fas fa-upload"></i> Upload Materials</a>
+{% endblock breadcrumb %}
+{% block content%}
+
+{% if messages %}
+{% for message in messages %}
+{% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token%}
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Property Id:-</label>
+      <input type="text" class="form-control" name="property_id"  placeholder="Property Id" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Property Name:-</label>
+        <input type="text" class="form-control" name="Propery_name" placeholder="Property name" required>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Property Category:-</label>
+        <select class="form-control" name="category" required>
+          <option value=""></option>
+          <option value="Key">Key</option>
+          <option value="Locker">Locker</option>
+          <option value="Desk">Desk</option>
+          <option value="Chair">Chair</option>
+          <option value="Bed">Bed</option>
+          <option value="Mattress">Mattress</option>
+          <option value="Pillow">Pillow</option>
+        </select>
+      </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Block Name:-</label>
+        <input type="email" class="form-control" name="Block_name" value="{{block_name}}" placeholder="Block Name" readonly required>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Dorm Name:-</label>
+      <select class="form-control" name="Dorm_name" required>
+        {% for i in dorm%}
+        <option value="{{i.id}}">{{i.Dorm_name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Register</button>
+  </form>
+    
+{% endblock %}

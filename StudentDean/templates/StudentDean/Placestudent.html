@@ -1,0 +1,196 @@
+
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+  
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Instruction">
+    
+    <h6><i class="fa fa-info-circle" aria-hidden="true"></i> Instractions</h6>
+  </button>
+  {% endblock breadcrumb %}
+{% block title %}
+<h1>Place Students</h1>
+{% endblock title %}
+
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+{% endfor %}
+{% endif %}
+<div class="modal fade" id="Instruction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn-primary"><h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle" aria-hidden="true"></i> Instractions</h5></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>1- You can Search Student by their Collage , Department or Batch.</p>
+        <p>2- You Can Select Any Criteria you want to place with. </p>
+        <p>3- You Can Search and Place specific Collage,Department or Batch of Students on specific Block while you select 
+          Students and block at the same time.
+        <br>
+        Remark:-If you select Students more than the capacity the System will place until the maximum capacity of the block.
+      </p>
+       <p>
+        4- If You Want to Place all Students once, select all students and criteria you Want place with.
+        remember:- <span style="color: darkred;"> Don't Select Block</span>  
+       </p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+  </div>
+
+</div>
+</div>
+
+
+<div id="spinner_box" style="display: none;" class="text-center mt-3">
+  <h1>Placing...</h1>
+  <div class="spinner-grow text-primary" role="status">
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+  </div>
+  <div class="spinner-grow text-success" role="status">
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+  </div>
+  <div class="spinner-grow text-warning" role="status">
+  </div>
+  <div class="spinner-grow text-info" role="status">
+  </div>
+  <div class="spinner-grow text-light" role="status">
+  </div>
+  <div class="spinner-grow text-dark" role="status">
+  </div>
+  </div>
+  
+<h3>Select Criteria to Place(optional)</h3>
+<div>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+     <div style="float: right;">
+      <span>
+      <input type="search" placeholder="Search User" name="searchedd">
+      <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search" ></i></button>
+    </span>
+     </div>
+     <input type="checkbox" name="criteria"  value="collage" id="">
+     <label style="margin-left: 5px;" for="">By College</label>
+     <input type="checkbox" name="criteria"  value="department" id="">
+     <label style="margin-left: 5px;" for="">By Department</label>
+     <br>
+     <input type="checkbox" name="criteria"  value="batch" id="">
+     <label style="margin-left: 5px;" for="">By Batch</label>
+     <br>
+     <h4>Select Block Where you need to place (optional)</h4>
+     <select name="selected_block" class="form-control" id="">
+      <option value="">-----Block-----</option>
+      {% for i in Block %}
+      <option value="{{i.Block_name}}">{{i.Block_name}}</option>
+      {% endfor %}
+     </select><br>
+    
+    <button type="submit" onclick="spinner();" class="btn btn-primary"><i class="fas fa-user-plus"></i> Place Student</button>
+    <br><br>
+
+<div class="table-responsive">
+<table id="useraccounttable"  class="table table-sm table-bordered" data-page-length='100'>
+    <thead class="thead-light">
+        <tr>  
+            <th scope="col"><input type="checkbox" id="selecter"></th>
+            <th scope="col">Id_no</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
+            <th scope="col">Gender</th>
+            <th scope="col">stream</th>
+            <th scope="col">Campus</th>
+            <th scope="col">collage</th>
+            <th scope="col">Department</th>
+            <th scope="col">Year of Student</th>
+            <th scope="col">Region</th>
+            <th scope="col">Disability</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in AllStudent %}
+    <tr>
+        <td><input type="checkbox" id="{{result.id}}" name="users" value="{{result.Id_no}}"></td>
+        <td > {{result.Id_no}} </td>
+        <td > {{result.FirstName}} </td>
+        <td > {{result.LastName}} </td> 
+        <td > {{result.Gender}} </td>
+        <td > {{result.stream}} </td>
+        <td>{{ result.Campus}}</td>
+        <td > {{result.collage}} </td>
+        <td > {{result.Department}} </td>
+        <td > {{result.Year_of_Student}} </td>
+        <td > {{result.Region}} </td>
+        <td > {{result.Disability}} </td>
+       
+       
+        <!-- <td>
+            <a class="btn btn-success"  href="#" role="button">Edit</a>
+            <a class="btn btn-danger" href="#" role="button" onclick="return confirm('Are you sure you want to delete?')">Remove</a>
+        </td>                -->
+    </tr>
+    
+    {% endfor%}
+
+</tbody>
+</table>
+</div>
+
+</form>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">
+
+    $(function () {
+
+        $("#get-selected").click(function () {
+            var Id_no = [];
+            var csrf=$('input[name=csrfmiddlewaretoken]').val();
+            $.each($("input:checkbox[name='users']:checked"), function () {
+              Id_no.push($(this).val());
+            });
+            
+            // alert("We remain open on: " + Id_no.join(", "));
+        })
+        // var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    });
+  
+</script>
+{% endblock %}
+
+{% block morejs %}
+<script>
+    function spinner(){
+    document.getElementById("spinner_box").style.display="block";
+  }
+  $('#useraccounttable').DataTable({
+    "ordering": true
+  });
+
+  $("#selecter").change(function () {
+    if (this.checked) {
+      $('input[name="users"]').prop('checked', true);
+    }
+    else {
+      $('input[name="users"]').prop('checked', false);
+    }
+  });
+</script>
+{% endblock morejs %}
+
+</body>
+</html>
+
+

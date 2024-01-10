@@ -1,0 +1,40 @@
+{% extends "chat/Base.html" %}
+{% load static %}
+{% block title %}Search Friends{% endblock %}
+{% block content %}
+   
+        <div class="wrapper" style="width: 400px;">
+            <h2 style="margin: 16px 0px">Add Friends</h2>
+            <div class="topnav">
+                <div class="search-container">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="text" placeholder="Search by  username" name="search" style="width: 210px">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </form>
+                </div>
+            </div>
+            
+            <ul class="list-unstyled mb-0">
+                {% for user in users %}
+                <li class="p-2">
+                  <a href="{% url 'addfriend' user.username%}" class="d-flex justify-content-between">
+                    <div class="d-flex flex-row">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                        class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                      <div class="pt-1">
+                        <p class="fw-bold mb-0">@{{user.username}}</p>
+                        <p class="small text-muted"></p>
+                      </div>
+                    </div>
+                    <div class="pt-1">
+                      <p class="small text-muted mb-1">5 mins ago</p>
+                      <span class="text-muted float-end"><i class="fas fa-check" aria-hidden="true"></i></span>
+                    </div>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+        </div>
+  
+{% endblock %}

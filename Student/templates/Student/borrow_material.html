@@ -1,0 +1,113 @@
+{% extends 'Student/base.html' %}
+{% block content%}
+
+
+
+
+{% if messages %}
+{% for message in messages %}
+  <h3>{{message}}</h3>
+{% endfor %}
+{% endif %}
+
+{% if properties %}
+
+
+<form method="post">
+  {% csrf_token %}
+<div>
+  <h1>Select Material You want to Borrow</h1>
+{% if bed %}
+<label for=""><h5 style="color: black;">Beds:-</h5> </label>
+<select class="form-select" name="bed" >
+   {% for i in bed %}
+   
+  <option value="{{i.id}}">{{i.Propery_name}}</option>
+  {% endfor %}
+</select>
+
+{% endif %}
+</div><br>
+<div>
+  {% if key %}
+  <label for=""><h5 style="color: black;"> Key:-</h5></label>
+  <select class="form-select" name="key" >
+    {% for i in key %}
+    <option value="{{i.id}}">{{i.Propery_name}}</option>
+    {% endfor %}
+  </select>
+  
+  {% endif %}
+  </div><br>
+  <div>
+
+    {% if locker %}
+    <label for=""><h5 style="color: black;">Locker:-</h5></label>
+    <select class="form-select" name="locker" >
+    {% for i in locker %}
+    
+      <option value="{{i.id}}">{{i.Propery_name}}</option>
+      {% endfor %}
+    </select>
+    
+    {% endif %}
+    </div>
+    <div>
+
+      {% if mattress %}
+      <label for=""><h5 style="color: black;">Mattress:-</h5> </label>
+      <select class="form-select" name="mattress" >
+        <option value=""></option>
+      {% for i in mattress %}
+      
+        <option value="{{i.id}}">{{i.Propery_name}}</option>
+        {% endfor %}
+      </select>
+      
+      {% endif %}
+      </div>
+      <div>
+
+        {% if pillow %}
+        <label for=""><h5 style="color: black;">Pillow:-</h5> </label>
+        <select class="form-select" name="pillow" >
+          <option value=""></option>
+        {% for i in pillow %}
+         
+          <option value="{{i.id}}">{{i.Propery_name}}</option>
+          {% endfor %}
+        </select>
+        
+        {% endif %}
+        <!-- Desk -->
+        <label for="">Desk:-</label>
+         <input type="text" class="form-control" value="Desk(Common)" readonly>
+         <label for="">Chair:-</label>
+         <input type="text" class="form-control" value="Chairs(Common)" readonly>
+        <!-- Chair -->
+       
+        </div>
+        <br>
+        <button class="btn btn-primary">Borrow</button>
+  </form>
+  {% endif %}
+
+
+<!-- <script>
+    $(document).ready(function(){
+        setInterval(function(){
+            $.ajax({
+                type:'GET',
+                url:" {% url 'requests' %}",
+                success: function(response){
+                
+                },
+                error:function(response){
+                  alert("an error Occoured")
+                }
+            });
+        },1000);
+    
+    })
+    </script> -->
+    {% endblock %}

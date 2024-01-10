@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block title %}
+<h1>Reset Placement</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+<form action="{% url 'resetPlacement' %}" class="d-flex" method="POST">
+  {% csrf_token %}
+  <input type="search" placeholder="Search User" name="searched">
+  <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search" ></i> </button>
+</form>
+{% endblock breadcrumb %}
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+{% endfor %}
+{% endif %}
+<div id="spinner_box" style="display: none;" class="text-center mt-3">
+  <h1>Deleting...</h1>
+  <div class="spinner-grow text-primary" role="status">
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+  </div>
+  <div class="spinner-grow text-success" role="status">
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+  </div>
+  <div class="spinner-grow text-warning" role="status">
+  </div>
+  <div class="spinner-grow text-info" role="status">
+  </div>
+  <div class="spinner-grow text-light" role="status">
+  </div>
+  <div class="spinner-grow text-dark" role="status">
+  </div>
+  </div>
+
+<div>
+  <form method="POST" action="{% url 'delete_placement' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button type="submit"class="btn btn-danger"onclick="return confirm('Are you sure you want to delete?'); spinner();"><i class="fas fa-trash-restore"></i>Reset Placement</button>
+
+<br><br>
+<div class="table-responsive">
+<table id="useraccounttable"  class="table table-sm table-bordered" data-page-length='100'>
+    <thead class="thead-light">
+        <tr>  
+            <th scope="col"><input type="checkbox" id="selecter"></th>
+            <th scope="col">Id_no</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
+            <th scope="col">Gender</th>
+            <th scope="col">stream</th>
+            <th scope="col">Campus</th>
+            <th scope="col">collage</th>
+            <th scope="col">Department</th>
+            <th scope="col">Year_of_Student</th>
+            <th scope="col">Disability</th>
+            <th scope="col">Block</th>
+            <th scope="col">Room</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in List %}
+    <tr>
+        <td><input type="checkbox" id="{{result.item1.Id_no}}" name="users" value="{{result.item1.Id_no}}"></td>
+        <th scope="row"> {{result.item1.Id_no}}</th>
+        <td>{{result.item1.FirstName}}</td>
+        <td>{{result.item1.LastName}}</td>
+        <td>{{result.item1.Gender}}</td>
+        <td>{{result.item1.stream}}</td>
+        <td>{{result.item1.Campus}}</td>
+        <td>{{result.item1.collage}}</td>
+        <td>{{result.item1.Department}}</td> 
+        <td>{{result.item1.Year_of_Student}}</td>
+        <td>{{result.item1.Disability}}</td>
+        <td>{{result.item2}}</td>
+        <td>{{result.item3}}</td>
+       
+       
+        <!-- <td>
+            <a class="btn btn-success"  href="#" role="button">Edit</a>
+            <a class="btn btn-danger" href="#" role="button" onclick="return confirm('Are you sure you want to delete?')">Remove</a>
+        </td>                -->
+    </tr>
+    
+    {% endfor%}
+
+</tbody>
+</table>
+</div>
+</form>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">
+
+    $(function () {
+
+        $("#get-selected").click(function () {
+            var Id_no = [];
+            var csrf=$('input[name=csrfmiddlewaretoken]').val();
+            $.each($("input:checkbox[name='users']:checked"), function () {
+              Id_no.push($(this).val());
+            });
+            
+            // alert("We remain open on: " + Id_no.join(", "));
+        })
+        // var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    });
+  
+</script>
+{% endblock %}
+
+{% block morejs %}
+<script>
+    function spinner(){
+    
+    document.getElementById("spinner_box").style.display="block";
+    
+  }
+  // $('#useraccounttable').DataTable({
+  //   "ordering": true
+  // });
+
+  $("#selecter").change(function () {
+    if (this.checked) {
+      $('input[name="users"]').prop('checked', true);
+    }
+    else {
+      $('input[name="users"]').prop('checked', false);
+    }
+  });
+</script>
+{% endblock morejs %}
+
+</body>
+</html>

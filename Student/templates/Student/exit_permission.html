@@ -1,0 +1,114 @@
+{% extends 'Student/base.html' %}
+{% block content%}
+{% if messages %}
+{% for message in messages %}
+  {{message}}
+{% endfor %}
+{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Items to Table</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+  
+    <div class="container">
+        <h1>Add Items to Box</h1>
+        <div class="form-group">
+            <label for="item">Select an item:</label>
+            <select class="form-control" id="item">
+                <option value="Trousers">Trousers</option>
+                <option value="Jacket">Jacket</option>
+                <option value="sweater">sweater</option>
+                <option value="T-shirt">T-shirt</option>
+                <option value="Shirt">Shirt</option>
+                <option value="Shoes">Shoes</option>
+                <option value="Blacket">Blacket</option>
+                <option value="Sheet">Sheet</option>
+                <option value="Cosmo">Cosmo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="quantity">Enter the quantity:</label>
+            <input type="number" class="form-control" id="quantity" min="1">
+        </div>
+        <button class="btn btn-primary" onclick="AddtoText()">Add to cart</button>
+        
+        <table class="table mt-4" id="inputTable">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody id="itemList">
+              
+            </tbody>
+        </table>
+        <button class="btn btn-primary" onclick="addItem()">Add Other</button>
+        <button class="btn btn-primary" onclick="transferData()">Add cart</button><br>
+     
+        <form method="post">
+        {% csrf_token%} 
+        <br>
+       <textarea class="form-control" id="myTextarea" name="textss" cols="120" rows="10" readonly required>
+
+       </textarea><br>
+       <button type="submit" class="btn btn-primary">Submit</button>
+       
+    </form><br>
+    <button class="btn btn-danger" onclick="clearTextarea()">Clear</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function addItem() {
+          var table = document.getElementById("inputTable");
+      var newRow = table.insertRow(table.rows.length);
+      var nameCell = newRow.insertCell(0);
+      var emailCell = newRow.insertCell(1);
+      nameCell.innerHTML = '<input type="text" class="form-control" name="name[]" />';
+      emailCell.innerHTML = '<input type="number" class="form-control" min="1" name="email[]" />';
+        }
+        function AddtoText(){
+          var selectedItem = $('#item').val();
+          var quantity = $('#quantity').val();
+          if (quantity < 1) {
+                alert("Please enter a valid quantity.");
+                return;
+            }
+          var textarea = document.getElementById("myTextarea");
+          textarea.value += selectedItem + "\t " + quantity +"\n";
+        }
+    function transferData() {
+      var table = document.getElementById("inputTable");
+      var rows = table.rows;
+      var output = "";
+
+      for (var i = 1; i < rows.length; i++) {
+        var item = rows[i].getElementsByTagName("input")[0].value;
+        var quantity = rows[i].getElementsByTagName("input")[1].value;
+        if (quantity < 1 || item =="") {
+                // alert("Please Enter Valid Quantity.");
+                continue;
+            }
+        output += item + "\t" + quantity + "\n";
+      }
+
+    // document.getElementById("outputTextarea").value = output;
+    var dataTextArea = document.getElementById("myTextarea");
+    dataTextArea.value += output; // Append data to the existing content
+    for (var i = rows.length - 1; i > 0; i--) {
+    table.deleteRow(i);
+  }
+  }
+  function clearTextarea() {
+  document.getElementById("myTextarea").value = "";
+}
+    </script>
+
+</body>
+</html> 
+{%endblock%}

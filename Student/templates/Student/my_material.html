@@ -1,0 +1,32 @@
+{% extends 'Student/base.html' %}
+{% block content%}
+
+{%if result%}
+ <h3>Remember:- Chairs and Desks Are Common For All This Dorm Members!</h3>
+ <table id="useraccounttable"  class="table table-sm table-bordered" data-page-length='100'>
+    <thead class="thead-light">
+        <tr>  
+            <th scope="col">Propery_Id</th>
+            <th scope="col">Propery_name</th>
+            <th scope="col">property_category</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in result%}
+    <tr>
+        <td>{{i.Property_id}}</td>
+        <td > {{i.Propery_name}}</td> 
+        <td > {{i.property_category}}</td>       
+    </tr>
+    
+    {% endfor%}
+
+</tbody>
+</table>
+
+{% else %}
+<h1>You Have No Material to Use in this Dorm.Please Apply For Materials.</h1>
+
+{% endif %}
+
+{%endblock %}

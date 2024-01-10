@@ -1,0 +1,71 @@
+{% extends "Sdeanindex.html"%}
+{% load crispy_forms_tags%}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+ 
+</head>
+<body>
+    {% block title %}
+  <h1><center> Manage Annoucement</center></h1>
+{% endblock title %}
+ {% block content%}
+ <div class="table-responsive">
+ <table id="Dorm" class="table table-hover">
+    <thead>
+        <tr>  
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">File</th>
+            <th scope="col">Active Date</th>
+            <th scope="col">End Date</th>
+
+            <th scope="col">Manage</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in announce %}
+    <tr>
+      <th scope="row"><a href="{% url 'view_announce' result.id %}"> {{result.Title}} </a></th>
+        <!-- <td>{{result.content}}</td> -->
+        <td scope="row" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ result.Content }}</td>
+
+        {% if result.Image %}
+         <td scope="row"><a href="{{result.Image.url}}">{{result.Image}}</a></td>
+         {% else %}
+         <td scope="row">NO FILE</a></td>
+         {% endif %}
+        
+    
+     
+        <td scope="row">{{result.Active_Date}}</td>
+        <td scope="row">{{result.End_Date}}</td>
+
+        <td>
+          <a class="btn btn-success" href="{% url 'Edit_Announcement' result.id %}" role="button">Edit</a>
+         
+      </td>
+    </tr>
+    {% endfor%}
+</tbody>
+</table>
+</div>
+ {% endblock content%}
+
+ {% block morejs %}
+ <script>
+   $('#Dorm').DataTable({
+     "ordering": false
+   });
+ </script>
+ {% endblock morejs %}
+</body>
+</html>

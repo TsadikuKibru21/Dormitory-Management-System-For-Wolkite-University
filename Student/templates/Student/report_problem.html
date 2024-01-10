@@ -1,0 +1,57 @@
+{% extends 'Student/base.html' %}
+{% block content %}
+<body>
+    {% if message in messages %}
+       {{message}}
+    {% endif %}
+   <form action="" method="post">
+    {% csrf_token %}
+    <p style="text-align: center;"></p>
+    <textarea name="text" cols="80" rows="4" placeholder="write any Problem Do you Have. "></textarea>
+    <br>
+    
+    <button type="submit" id="post" class="col-xs-12 btn btn-primary btn-load btn-lg">Report</button></p>
+    </form>
+<br>
+
+   <div class="table-responsive">
+    <table class="table table-sm table-bordered" data-page-length='100'>
+        <thead class="thead-light">
+            <tr>  
+                <th scope="col">Student</th>
+               
+                <th scope="col">Problem</th>
+                <th scope="col">Date</th>
+              
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in problem %}
+            {% if i.is_solve == 'Un-Approved' %}
+                <tr>
+                    <td>{{ i.student }}</td>
+                    <td>{{ i.problem }}</td>
+                    <td>{{ i.date }}</td>
+                    <td>{{ i.is_solve }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{% url 'approve_problem' i.id %}" onclick="return confirm('Are you sure The Problem Is Approved?')" role="button">
+                            <i class="fas fa-pen"></i> Approved?
+                        </a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    
+    </tbody>
+    </table>
+    </div>
+    
+</body>
+
+
+<style>
+
+</style>
+
+{% endblock content %}

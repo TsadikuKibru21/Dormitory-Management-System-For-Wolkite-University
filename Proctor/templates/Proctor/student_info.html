@@ -1,0 +1,116 @@
+{% extends 'Proctor/base.html'%}
+
+
+{% block title %}
+ View Students
+{% endblock title %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <title>View Users</title>
+</head>
+</body>
+{% block content%}
+{% if messages %}
+{% for message in messages %}
+{% endfor %}
+{% endif %}
+<form action="{% url 'deleteuser' %}" method="POST">
+  {% csrf_token %}
+<div class="table-responsive">
+<table id="useraccounttable"  class="table table-sm table-bordered" data-page-length='100'>
+    <thead class="thead-light">
+        <tr>  
+            <th scope="col">Id_no</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
+            <th scope="col">Gender</th>
+            
+            <th scope="col">Department</th>
+            <th scope="col">Disability</th>
+            <th scope="col">phone_no</th>
+            <th scope="col">Block</th>
+            <th scope="col">Dorm</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in List %}
+    <tr>
+        <td>   
+          {% comment %} {% url 'sessions' %} {% endcomment %}
+          <a href="{% url 'borrowed_materials' result.item1.id %}">
+          {{result.item1.Id_no}}</a></td>
+        <td > {{result.item1.FirstName}} </a></td>
+        <td>{{result.item1.LastName}}</td>
+        <td>{{result.item1.Gender}}</td>
+        
+        <td>{{result.item1.Department}}</td>
+        <td>{{result.item1.Disability}}</td>
+        <td>{{result.item1.phone_no}}</td>
+        <td>{{Block}}</td>
+        <td>{{result.item2.Dorm_name}}</td>
+        <td style="background-color: rgb(158, 151, 176); color: black;">{{result.item3}}</td>
+       
+        <!-- <td>
+            <a class="btn btn-success"  href="#" role="button">Edit</a>
+            <a class="btn btn-danger" href="#" role="button" onclick="return confirm('Are you sure you want to delete?')">Remove</a>
+        </td>                -->
+    </tr>
+    
+    {% endfor%}
+
+</tbody>
+</table>
+</div>
+
+</form>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+
+        $("#get-selected").click(function () {
+            var Id_no = [];
+            var csrf=$('input[name=csrfmiddlewaretoken]').val();
+            $.each($("input:checkbox[name='users']:checked"), function () {
+              Id_no.push($(this).val());
+            });
+            
+            // alert("We remain open on: " + Id_no.join(", "));
+        })
+        // var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+    });
+    function spinner(){
+    
+    document.getElementById("spinner_box").style.display="block";
+    return confirm('Are you sure you want to delete?')
+  }
+</script>
+{% endblock %}
+
+{% block morejs %}
+<script>
+  $('#useraccounttable').DataTable({
+    "ordering": false
+  });
+
+  $("#selecter").change(function () {
+    if (this.checked) {
+      $('input[name="users"]').prop('checked', true);
+    }
+    else {
+      $('input[name="users"]').prop('checked', false);
+    }
+  });
+</script>
+
+{% endblock morejs %}
+
+</body>
+</html>
