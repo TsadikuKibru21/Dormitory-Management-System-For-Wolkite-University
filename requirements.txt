@@ -25,7 +25,6 @@ crispy-bootstrap5==0.7
 cryptography==2.8
 dbus-python==1.2.16
 decorator==4.4.2
-defer==1.0.0
 defusedxml==0.7.1
 diff-match-patch==20200713
 distro==1.4.0
