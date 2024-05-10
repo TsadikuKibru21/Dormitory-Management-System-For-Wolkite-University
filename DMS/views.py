@@ -44,6 +44,7 @@ def index(request):
         form.save()
         #print("accc added ")
     company=Settings.objects.all()
+    image=""
     for i in company:
         image=i.background_image
         break
@@ -108,7 +109,7 @@ def login_view(request):
             else:
                 messages.error(request,"Invalid credientials...")
     company=Settings.objects.all()
-    
+    image=''
     for i in company:
         image=i.background_image
         break

@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import dj_database_url 
 import os
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -107,6 +106,8 @@ DATABASES = {
     #     'HOST':'localhost'
     # }
 }
+DATABASES['default']=dj_database_url.parse("postgres://postgres_ly1f_user:pO3CF6blIxaUb4joQwIDaBRIXwJjkCi5@dpg-coutbd0l6cac73baqqhg-a.oregon-postgres.render.com/postgres_ly1f")
+# postgres://postgres_ly1f_user:pO3CF6blIxaUb4joQwIDaBRIXwJjkCi5@dpg-coutbd0l6cac73baqqhg-a.oregon-postgres.render.com/postgres_ly1f
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR/'backup/'}
 
