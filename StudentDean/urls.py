@@ -36,7 +36,21 @@ urlpatterns = [
     path('manage_announce/',views.manage_announce,name='manage_announce'),
     path('Edit_Announcement/<int:pk>/',views.Edit_Announcement,name='Edit_Announcement'),
     path('overallinfo/',views.OverallInfo,name="SDoverallinfo"),
-     ############Message########
+    path('attendance_machine_add/', views.attendance_machine_add, name='attendance_machine_add'),
+    path('view_machine_info/', views.view_machine_info, name='view_machine_info'),
+
+    path('updatemachine/<int:pk>/',views.updatemachine,name='updatemachine'),
+    path('deletemachine/<int:pk>/',views.deletemachine,name='deletemachine'),
+
+    path('test_connection/<int:pk>/',views.test_connection,name='test_connection'),
+    path('fetch_attendance_data/<int:pk>/',views.fetch_attendance_data,name='fetch_attendance_data'),
+
+
+
+    path('view_student_attendance/', views.view_student_attendance, name='view_student_attendance'),
+
+    path('fetch-machine-data/', views.fetch_machine_data, name='fetch_machine_data'),
+    # path('attendance/view_student_attendance/', views.view_student_attendance, name='view_student_attendance'),     ############Message########
     path('',include('chat.urls')),
 
     path('logout/',views.logout_View,name='logout'),

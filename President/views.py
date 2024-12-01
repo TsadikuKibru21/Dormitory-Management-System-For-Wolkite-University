@@ -113,12 +113,18 @@ def OverallInfo(request):
         females_available_dorm_capacity=0
         pl=Placement.objects.all()
         for i in pl:
-            acc=UserAccount.objects.get(id=i.Stud_id_id)
-            usr=User.objects.get(id=acc.User_id)
-            if usr.Gender == 'Male':
-                placed_male+=1
-            else:
-                placed_female+1
+            try:
+                acc=UserAccount.objects.get(id=i.Stud_id_id)
+                usr=User.objects.get(id=acc.User_id)
+                if usr.Gender == 'Male':
+                    placed_male+=1
+                else:
+                    placed_female+1
+            except UserAccount.DoesNotExist:
+                # Handle cases where the UserAccount does not exist
+                print(f"UserAccount for Stud_id {i.Stud_id_id} not found.")
+                continue  # Skip this placement and continue with the next
+            
         drm=Dorm.objects.all()
         maledormcapacity=0
         femaledormcapacity=0

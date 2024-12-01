@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>{{ Student_Dean | default:"Student Dean" }}</title>
+  <title>{{ StudentDean | default:"Student Dean" }}</title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
@@ -276,7 +276,58 @@
             </li>
             
 
+
+
+
+
+
+
+
+
             
+            <li class="nav-header">Attendance</li>
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-tasks"></i>
+                <p>
+                 Attendance Management
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                
+                <li class="nav-item">
+                  {% comment %} {% url 'sessions' %} {% endcomment %}
+                  <a href="{% url 'attendance_machine_add' %}" class="nav-link">
+                    <i class="nav-icon fa fa-plus"></i>
+                    <p>
+                      Add Machine
+                    </p>
+                  </a>
+                </li>
+            
+                <li class="nav-item">
+                  {% comment %} {% url 'terms' %} {% endcomment %}
+                  <a href="{% url 'view_machine_info'%}" class="nav-link">
+                    <i class="nav-icon fas fa-eye"></i>
+                    <p>
+                      View Machine Info
+                      <i class="right"></i>
+                    </p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  {% comment %} {% url 'terms' %} {% endcomment %}
+                  <a href="{% url 'view_student_attendance'%}" class="nav-link">
+                    <i class="nav-icon fas fa-eye"></i>
+                    <p>
+                      View Attendance
+                      <i class="right"></i>
+                    </p>
+                  </a>
+                </li>
+            </li>
             
 
 

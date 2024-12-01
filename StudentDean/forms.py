@@ -118,3 +118,28 @@ class AddAnnouncement(forms.ModelForm):
             'Active_Date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control', 'type': 'date'}),
             'End_Date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control', 'type': 'date'}),
         }
+
+class AttendanceMachineForm(forms.ModelForm):
+    class Meta:
+        model = AttendanceMachine
+        fields = ['name', 'ip', 'port', 'block_id']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Machine Name'}),
+            'ip': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter IP Address'}),
+            'port': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Port'}),
+            'block_id': forms.Select(attrs={'class': 'form-control'}),
+        }
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ['student_name', 'date_time', 'block_id', 'attendance_machine']
+        widgets = {
+            'student_name': forms.Select(attrs={'class': 'form-control'}),
+            'date_time': forms.DateTimeInput(attrs={
+                'class': 'form-control', 
+                'type': 'datetime-local', 
+                'placeholder': 'Select Date and Time'
+            }),
+            'block_id': forms.Select(attrs={'class': 'form-control'}),
+            'attendance_machine': forms.Select(attrs={'class': 'form-control'}),
+        }

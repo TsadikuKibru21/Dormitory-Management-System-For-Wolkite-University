@@ -21,66 +21,129 @@ def settings():
         name=i.Abrevation_name
         context1={'Abrevation_name':name}
     return context1
+
+
+def generate_schedule(proctor, start_date, end_date, number_of_shift_per_day):
+    start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+    end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+    proctors = list(proctor)
+    shuffle(proctors)
+    num_proctor = len(proctors)
+    days = (end_date - start_date).days + 1
+    
+    # Calculate time range for each shift
+    shifts = []
+    shift_duration = 24 / number_of_shift_per_day  # Divide 24 hours by the number of shifts per day
+    for i in range(number_of_shift_per_day):
+        start_hour = i * shift_duration
+        end_hour = (i + 1) * shift_duration
+        shift_range = f"{int(start_hour):02d}:{int((start_hour % 1) * 60):02d} - {int(end_hour):02d}:{int((end_hour % 1) * 60):02d}"
+        shifts.append(shift_range)
+    
+    nshifts = number_of_shift_per_day
+    
+    if ((num_proctor % 2 == 0 and nshifts % 2 == 0) or (num_proctor % 2 == 1 and nshifts % 2 == 1)) and num_proctor > 0:  # even
+        pr = 0
+        sh = 0
+        date = start_date - timedelta(days=1)  # start date
+        for i in range(nshifts * days):
+            if i % num_proctor == 0 and nshifts != 1:
+                proctors.reverse()
+            if i % nshifts == 0:
+                date = date + timedelta(days=1)
+            obj = schedule()
+            prt = UserAccount.objects.get(id=proctors[pr])
+            obj.procotor = prt
+            obj.date = date
+            obj.shift = shifts[sh]  # Use the calculated time range
+            obj.num_shift_per_day = nshifts
+            obj.save()
+            pr += 1
+            sh += 1
+            if pr == num_proctor:
+                pr = 0
+            if sh == nshifts:
+                sh = 0
+    elif ((num_proctor % 2 == 0 and nshifts % 2 == 1) or (num_proctor % 2 == 1 and nshifts % 2 == 0)) and num_proctor > 0:
+        pr = 0
+        sh = 0
+        date = start_date - timedelta(days=1)  # start date
+        for i in range(nshifts * days):
+            if i % nshifts == 0:
+                date = date + timedelta(days=1)
+            obj = schedule()
+            prt = UserAccount.objects.get(id=proctors[pr])
+            obj.procotor = prt
+            obj.date = date
+            obj.shift = shifts[sh]  # Use the calculated time range
+            obj.num_shift_per_day = nshifts
+            obj.save()
+            pr += 1
+            sh += 1
+            if pr == num_proctor:
+                pr = 0
+            if sh == nshifts:
+                sh = 0
 # Create your views here.z
 ##############Schedule##########
-def generate_schedule(proctor,start_date,end_date,number_of_shift_per_day):
-    # print(proctor)
-    start_date=datetime.strptime(start_date,'%Y-%m-%d').date()
-    end_date=datetime.strptime(end_date,'%Y-%m-%d').date()
-    proctors=list(proctor)
-    shuffle(proctors)
-    num_proctor=len(proctors)
-    days=(end_date-start_date).days+1
-    shifts=[]
-    for i in range(1,number_of_shift_per_day+1):
-        shifts.append("Shift"+ str(i))
-    # print(shifts)
-    nshifts=number_of_shift_per_day
-    if ((num_proctor %2 == 0 and nshifts %2 ==0) or (num_proctor %2 == 1 and nshifts %2 ==1))and num_proctor>0:#even
-        pr=0
-        sh=0
-        date=start_date - timedelta(days=1) #start date
-        for i in range(nshifts*days):
-            if i % num_proctor==0 and nshifts!=1:
-                proctor.reverse()
-            if i%nshifts==0:
-                date=date + timedelta(days=1)
-            obj=schedule()
-            prt=UserAccount.objects.get(id=proctor[pr])
-            obj.procotor=prt
-            obj.date=date
-            obj.shift=shifts[sh]
-            obj.num_shift_per_day=nshifts
-            obj.save()
-            # print(shifts[sh]," proc=",proctor[pr])
-            pr+=1
-            sh+=1
-            if pr==num_proctor:
-                pr=0
-            if sh==nshifts:
-                sh=0
-    elif ((num_proctor %2 == 0 and nshifts %2 ==1) or (num_proctor %2 == 1 and nshifts %2 ==0))and num_proctor>0:
-        pr=0
-        sh=0
-        date=start_date - timedelta(days=1) #start dat
-        # print(nshifts*days)
-        for i in range(nshifts*days):
-            if i%nshifts==0:
-                date=date + timedelta(days=1)
-            obj=schedule()
-            prt=UserAccount.objects.get(id=proctor[pr])
-            obj.procotor=prt
-            obj.date=date
-            obj.shift=shifts[sh]
-            obj.num_shift_per_day=nshifts
-            obj.save()
-            # print(shifts[sh]," proc=",proctor[pr])
-            pr+=1
-            sh+=1
-            if pr==num_proctor:
-                pr=0
-            if sh==nshifts:
-                sh=0
+# def generate_schedule(proctor,start_date,end_date,number_of_shift_per_day):
+#     # print(proctor)
+#     start_date=datetime.strptime(start_date,'%Y-%m-%d').date()
+#     end_date=datetime.strptime(end_date,'%Y-%m-%d').date()
+#     proctors=list(proctor)
+#     shuffle(proctors)
+#     num_proctor=len(proctors)
+#     days=(end_date-start_date).days+1
+#     shifts=[]
+#     for i in range(1,number_of_shift_per_day+1):
+#         shifts.append("Shift"+ str(i))
+#     # print(shifts)
+#     nshifts=number_of_shift_per_day
+#     if ((num_proctor %2 == 0 and nshifts %2 ==0) or (num_proctor %2 == 1 and nshifts %2 ==1))and num_proctor>0:#even
+#         pr=0
+#         sh=0
+#         date=start_date - timedelta(days=1) #start date
+#         for i in range(nshifts*days):
+#             if i % num_proctor==0 and nshifts!=1:
+#                 proctor.reverse()
+#             if i%nshifts==0:
+#                 date=date + timedelta(days=1)
+#             obj=schedule()
+#             prt=UserAccount.objects.get(id=proctor[pr])
+#             obj.procotor=prt
+#             obj.date=date
+#             obj.shift=shifts[sh]
+#             obj.num_shift_per_day=nshifts
+#             obj.save()
+#             # print(shifts[sh]," proc=",proctor[pr])
+#             pr+=1
+#             sh+=1
+#             if pr==num_proctor:
+#                 pr=0
+#             if sh==nshifts:
+#                 sh=0
+#     elif ((num_proctor %2 == 0 and nshifts %2 ==1) or (num_proctor %2 == 1 and nshifts %2 ==0))and num_proctor>0:
+#         pr=0
+#         sh=0
+#         date=start_date - timedelta(days=1) #start dat
+#         # print(nshifts*days)
+#         for i in range(nshifts*days):
+#             if i%nshifts==0:
+#                 date=date + timedelta(days=1)
+#             obj=schedule()
+#             prt=UserAccount.objects.get(id=proctor[pr])
+#             obj.procotor=prt
+#             obj.date=date
+#             obj.shift=shifts[sh]
+#             obj.num_shift_per_day=nshifts
+#             obj.save()
+#             # print(shifts[sh]," proc=",proctor[pr])
+#             pr+=1
+#             sh+=1
+#             if pr==num_proctor:
+#                 pr=0
+#             if sh==nshifts:
+#                 sh=0
 @login_required(login_url='login_view')
 def home(request):
     if 'username' in request.session:

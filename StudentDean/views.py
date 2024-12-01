@@ -22,6 +22,165 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import csv
+import logging
+from django.shortcuts import get_object_or_404
+from zk import ZK
+#view_student_attendance view_attendance.html, fetch_attendance_data
+
+@login_required(login_url='login_view')
+def fetch_attendance_data(request,pk):
+    if request.method == 'POST':
+        machines = get_object_or_404(AttendanceMachine, id=pk)
+        for machine in machines:
+            zk = ZK(machine.ip, port=machine.port, timeout=10, password=0, force_udp=False, ommit_ping=False)
+            try:
+                conn = zk.connect()
+                conn.disable_device()
+                records = conn.get_attendance()
+                for record in records:
+                    # Search if the attendance record already exists
+                    if not Attendance.objects.filter(
+                        student_name_id=record.user_id,
+                        date_time=record.timestamp,
+                        block_id=machine.block_id,
+                        attendance_machine=machine
+                    ).exists():
+                        # Save attendance record if not found
+                        Attendance.objects.create(
+                            student_name_id=record.user_id,
+                            date_time=record.timestamp,
+                            block_id=machine.block_id,
+                            attendance_machine=machine
+                        )
+                conn.enable_device()
+                conn.disconnect()
+            except Exception as e:
+                print(f"Error fetching data from machine {machine.name}: {e}")
+        
+        # Redirect to the same page after fetching data
+        return redirect('view_machine_info')  # Replace 'view_machine_info' with your view name for attendance listing
+
+    return redirect('view_machine_info')
+@login_required(login_url='login_view')
+def fetch_machine_data(request):
+    if request.method == 'POST':
+        machines = AttendanceMachine.objects.all()
+        for machine in machines:
+            zk = ZK(machine.ip, port=machine.port, timeout=10, password=0, force_udp=False, ommit_ping=False)
+            try:
+                conn = zk.connect()
+                conn.disable_device()
+                records = conn.get_attendance()
+                for record in records:
+                    # Search if the attendance record already exists
+                    if not Attendance.objects.filter(
+                        student_name_id=record.user_id,
+                        date_time=record.timestamp,
+                        block_id=machine.block_id,
+                        attendance_machine=machine
+                    ).exists():
+                        # Save attendance record if not found
+                        Attendance.objects.create(
+                            student_name_id=record.user_id,
+                            date_time=record.timestamp,
+                            block_id=machine.block_id,
+                            attendance_machine=machine
+                        )
+                conn.enable_device()
+                conn.disconnect()
+            except Exception as e:
+                print(f"Error fetching data from machine {machine.name}: {e}")
+        
+        # Redirect to the same page after fetching data
+        return redirect('view_student_attendance')  # Replace 'view_student_attendance' with your view name for attendance listing
+
+    return redirect('view_student_attendance')  # Fallback if the method is not POST
+def view_student_attendance(request):
+    attendances = Attendance.objects.all()
+    return render(request, 'StudentDean/view_attendance.html', {'attendances': attendances})
+
+@login_required(login_url='login_view')
+def test_connection(request, pk):
+    if 'username' in request.session:
+        # Fetch the attendance machine
+        machine = get_object_or_404(AttendanceMachine, id=pk)
+        machine.status = 'Connected' 
+        # Initialize ZK connection
+        zk = ZK(machine.ip, port=machine.port, timeout=10, password=0, force_udp=False, ommit_ping=False)
+        try:
+            # Try to connect
+            conn = zk.connect()
+            conn.disconnect()  # Disconnect immediately
+            machine.status = 'Connected'  # Update status to Connected
+            messages.success(request,"Connected Succesfully!")
+        except Exception as e:
+            print(f"Failed to connect to the device: {e}")
+            machine.status = 'Not-Connected'  # Update status to Not-Connected
+            messages.error(request,"Connection Failed!")
+
+        # Save the updated status to the database
+        machine.save()
+
+        # Redirect back to the machine list view
+        return redirect('view_machine_info')  # Replace with your view name
+
+    else:
+        return redirect('login_view')
+@login_required(login_url='login_view')
+def deletemachine(request,pk):
+    if 'username' in request.session:
+        result=AttendanceMachine.objects.get(id=pk)
+        result.delete() 
+        messages.error(request,"Data Deleted Succesfully!")
+    else:
+        return redirect('login_view')
+    return redirect('view_machine_info')
+    
+@login_required(login_url='login_view')
+def updatemachine(request,pk):
+    if 'username' in request.session:
+        result=AttendanceMachine.objects.get(id=pk)
+        result1=AttendanceMachine.objects.order_by('block_id')
+        form=AttendanceMachineForm(request.POST or None,instance=result)
+        context = { 'res': result,'form':form} 
+        setting=settings()
+        context={**context,**setting}
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Data Updated Succesfully!")
+            context={"attendance_machine":result1}
+            setting=settings()
+            context={**context,**setting}
+            return render(request ,'StudentDean/attendance_machine_list.html',context)
+    else:
+        return redirect('login_view')
+    return render(request,'StudentDean/updatemachine.html',context)
+@login_required(login_url='login_view')
+def attendance_machine_add(request):
+    if 'username' in request.session:
+        form=AttendanceMachineForm(request.POST or None)
+        if request.method=='POST':
+            if form.is_valid():
+                ip=request.POST['ip']
+                if AttendanceMachine.objects.filter(ip=ip).exists() :
+                    messages.error(request, "This Machine is already Registerd")
+                    return redirect('attendance_machine_add')
+                else:
+                    form.save()
+                    messages.success(request,"Machine Registered Succesfully")
+                    return redirect('attendance_machine_add')
+    else:
+        return redirect('login_view')
+    context={'form':form}
+    setting=settings()
+    context={**context,**setting}
+    return render(request,'StudentDean/attendance_machine.html',context)
+
+def view_machine_info(request):
+    attendance_machine = AttendanceMachine.objects.all()
+    return render(request, 'StudentDean/attendance_machine_list.html', {'attendance_machine': attendance_machine})
+
+    
 def settings():
     company=Settings.objects.all()
     for i in company:
@@ -56,7 +215,7 @@ def announce(request):
              messages.error(request,'One of (Content or File) Must be Required.')
             else:
                 
-                Active_Date=datetime.now()
+                Active_Date=datetime.datetime.now()
                 End_Date=request.POST['End_Date']
                
                 end=datetime.strptime(End_Date, '%Y-%m-%d')
@@ -76,7 +235,7 @@ def announce(request):
                             a1=AnnouncementStatus.objects.create(user=i,announcement=annou,is_read=False)
                             a1.save()
                     messages.success(request,'Announce Successfully.')
-        context={'date':datetime.now()}
+        context={'date':datetime.datetime.now()}
         setting=settings()
         context={**context,**setting}
         pass
@@ -89,7 +248,7 @@ def announce(request):
 def manage_announce(request):
     if 'username' in request.session:
        
-        announce=Announcement.objects.filter(End_Date__gte=datetime.now()).order_by('-Active_Date')
+        announce=Announcement.objects.filter(End_Date__gte=datetime.datetime.now()).order_by('-Active_Date')
         # for i in announce:
         #     i.Image='http://127.0.0.1:8000/media/'+str(i.Image)
         context={'announce':announce}
@@ -135,6 +294,7 @@ def home(request):
 def OverallInfo(request):
     if 'username' in request.session:
         total_Placed=Placement.objects.all().count()
+        print("########################## all placed total_Placed ########",total_Placed)
         total_dorms=Dorm.objects.all().count()
         placed_male=0
         placed_female=0
@@ -148,12 +308,19 @@ def OverallInfo(request):
         females_available_dorm_capacity=0
         pl=Placement.objects.all()
         for i in pl:
-            acc=UserAccount.objects.get(id=i.Stud_id_id)
-            usr=User.objects.get(id=acc.User_id)
-            if usr.Gender == 'Male':
-                placed_male+=1
-            else:
-                placed_female+1
+            try:
+                acc=UserAccount.objects.get(id=i.Stud_id_id)
+                usr=User.objects.get(id=acc.User_id)
+                if usr.Gender == 'M' or usr.Gender == 'male' or usr.Gender == 'Male':
+                    placed_male+=1
+                elif usr.Gender == 'F':
+                    placed_female+1
+                else:
+                    logging.info("################ get without gender #################")
+            except UserAccount.DoesNotExist:
+                # Handle cases where the UserAccount does not exist
+                print(f"UserAccount for Stud_id {i.Stud_id_id} not found.")
+                continue  # Skip this placement and continue with the next
         drm=Dorm.objects.all()
         maledormcapacity=0
         femaledormcapacity=0

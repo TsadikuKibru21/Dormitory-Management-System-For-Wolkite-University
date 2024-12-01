@@ -59,36 +59,36 @@ def search(request):
     :param request:
     :return:
     """
-    # student_dean=Role.objects.get(R_name='Student_Dean')
+    # StudentDean=Role.objects.get(R_name='StudentDean')
                   
     #                 # Filter users by role and search query
-    #                 users = UserAccount.objects.filter(Role__in=[student_dean], 
+    #                 users = UserAccount.objects.filter(Role__in=[StudentDean], 
     username=request.user.username
     acc=UserAccount.objects.get(username=username)
     role_id=acc.Role_id
     rr=Role.objects.get(id=role_id)
     users=[]
-    if rr.R_name=="Student_Dean":
+    if rr.R_name=="StudentDean":
         president=Role.objects.get(R_name='President')
         registrar=Role.objects.get(R_name='Registrar')
         admin=Role.objects.get(R_name='Admin')
         supervisor=Role.objects.get(R_name='Supervisor')
         users = list(UserAccount.objects.filter(Role__in=[president,registrar,admin,supervisor]))
     elif rr.R_name=="Supervisor":
-        studendean=Role.objects.get(R_name='Student_Dean')
+        studendean=Role.objects.get(R_name='StudentDean')
         proctor=Role.objects.get(R_name='Proctor')
         users = list(UserAccount.objects.filter(Role__in=[studendean,proctor]))
     elif rr.R_name=="Registrar":
-        studendean=Role.objects.get(R_name='Student_Dean')
+        studendean=Role.objects.get(R_name='StudentDean')
         users = list(UserAccount.objects.filter(Role__in=[studendean]))
     elif rr.R_name=="Proctor":
         supervisor=Role.objects.get(R_name='Supervisor')
         users = list(UserAccount.objects.filter(Role__in=[supervisor]))
     elif rr.R_name=="President":
-        studendean=Role.objects.get(R_name='Student_Dean')
+        studendean=Role.objects.get(R_name='StudentDean')
         users = list(UserAccount.objects.filter(Role__in=[studendean]))
     elif rr.R_name=="Admin":
-        studendean=Role.objects.get(R_name='Student_Dean')
+        studendean=Role.objects.get(R_name='StudentDean')
         users = list(UserAccount.objects.filter(Role__in=[studendean]))
        
     for user in users:
@@ -198,7 +198,7 @@ def backpage(request):
         r=user.Role_id
         role=Role.objects.get(id=r)
         role_name=role.R_name
-        if role_name=='Student_Dean':
+        if role_name=='StudentDean':
             return redirect('studentdeanhome')
         elif role_name=='Supervisor':
             return redirect('supervisor')

@@ -1,56 +1,174 @@
 {% extends "Sdeanindex.html"%}
-{% block content%}
+
+{% block content %}
 <center>
-<h1>Over All Dormitory Information</h1>
+  <h1>Over All Dormitory Information</h1>
 </center>
 <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title font-weight-bold">Dorm Information</h3>
-            <p class="card-text">Males Dorm  = {{males_dorm}}</p>
-            <p class="card-text">Females Dorm  = {{females_dorm}}</p>
-            <p class="card-text">Total Dorm  = {{total_dorms}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title font-weight-bold">Placement Information</h5>
-            <p class="card-text">Male Placed Students  ={{placed_male}}</p>
-            <p class="card-text">Female Placed Students  ={{placed_female}}</p>
-            <p class="card-text">Total Placed Students  ={{total_Placed}}</p>
-          </div>
+  <div class="row">
+    <!-- Dorm Information -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title font-weight-bold">Dorm Information</h3>
+        </br>
+
+          <canvas id="dormInfoChart"></canvas>
         </div>
       </div>
     </div>
-    
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title font-weight-bold">Available Dorms</h5>
-            <p class="card-text">Males Available Dorms  ={{males_availabe_dorm}}</p>
-            <p class="card-text">Females Available Dorms  ={{females_available_dorm}}</p>
-            <p class="card-text">Total Available Dorms  ={{tota_available_dorm}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title font-weight-bold">Free Dorm Capacity</h5>
-            <p class="card-text">Males Free Dorm Capacity  ={{males_availabe_dorm_capacity}}</p>
-            <p class="card-text">Females Free Dorm Capacity  ={{females_available_dorm_capacity}}</p>
-            <p class="card-text">Total Free Dorm Capacity  ={{tota_available_dorm_capacity}}</p>
 
-          </div>
+    <!-- Placement Information -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title font-weight-bold">Placement Information</h5>
+        </br>
+   
+          <canvas id="placementInfoChart"></canvas>
         </div>
       </div>
     </div>
   </div>
   
+  <div class="row">
+    <!-- Available Dorms -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title font-weight-bold">Available Dorms</h5>
+        </br>
   
-{%endblock%}
+          <canvas id="availableDormsChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Free Dorm Capacity -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title font-weight-bold">Free Dorm Capacity</h5>
+        </br>
+  
+          <canvas id="freeDormCapacityChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Prepare data from Django context variables
+  var males_dorm = {{ males_dorm }};
+  var females_dorm = {{ females_dorm }};
+  var total_dorms = {{ total_dorms }};
+  
+  var placed_male = {{ placed_male }};
+  var placed_female = {{ placed_female }};
+  var total_Placed = {{ total_Placed }};
+  
+  var males_availabe_dorm = {{ males_availabe_dorm }};
+  var females_available_dorm = {{ females_available_dorm }};
+  var tota_available_dorm = {{ tota_available_dorm }};
+  
+  var males_availabe_dorm_capacity = {{ males_availabe_dorm_capacity }};
+  var females_available_dorm_capacity = {{ females_available_dorm_capacity }};
+  var tota_available_dorm_capacity = {{ tota_available_dorm_capacity }};
+
+  // Dorm Information Chart (Pie Chart)
+  var ctx1 = document.getElementById('dormInfoChart').getContext('2d');
+  var dormInfoChart = new Chart(ctx1, {
+    type: 'pie',
+    data: {
+      labels: ['Males Dorm', 'Females Dorm', 'Total Dorm'],
+      datasets: [{
+        label: 'Dorm Information',
+        data: [males_dorm, females_dorm, total_dorms],
+        backgroundColor: ['#FF5733', '#33FF57', '#3357FF'],
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        tooltip: {
+          enabled: true
+        }
+      }
+    }
+  });
+
+  // Placement Information Chart (Bar Chart)
+  var ctx2 = document.getElementById('placementInfoChart').getContext('2d');
+  var placementInfoChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['Male Placed', 'Female Placed', 'Total Placed'],
+      datasets: [{
+        label: 'Placed Students',
+        data: [placed_male, placed_female, total_Placed],
+        backgroundColor: '#8E44AD',
+        borderColor: '#8E44AD',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  // Available Dorms Chart (Doughnut Chart)
+  var ctx3 = document.getElementById('availableDormsChart').getContext('2d');
+  var availableDormsChart = new Chart(ctx3, {
+    type: 'pie',
+    data: {
+      labels: ['Males Available Dorms', 'Females Available Dorms', 'Total Available Dorms'],
+      datasets: [{
+        label: 'Available Dorms',
+        data: [males_availabe_dorm, females_available_dorm, tota_available_dorm],
+        backgroundColor: ['#FFCC00', '#00FFCC', '#FF6600'],
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          enabled: true
+        }
+      }
+    }
+  });
+
+  // Free Dorm Capacity Chart (Radar Chart)
+  var ctx4 = document.getElementById('freeDormCapacityChart').getContext('2d');
+  var freeDormCapacityChart = new Chart(ctx4, {
+    type: 'bar',
+    data: {
+      labels: ['Males Free Capacity', 'Females Free Capacity', 'Total Free Capacity'],
+      datasets: [{
+        label: 'Free Dorm Capacity',
+        data: [males_availabe_dorm_capacity, females_available_dorm_capacity, tota_available_dorm_capacity],
+        backgroundColor: ['#FFCC00', '#00FFCC', '#FF6600'],
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          enabled: true
+        }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

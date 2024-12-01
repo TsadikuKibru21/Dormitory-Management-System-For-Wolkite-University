@@ -42,7 +42,7 @@ def adminhome(request):
             name=i.Abrevation_name
         if request.session['username']=="":  
             redirect('login_view')
-        Role_list=['Student_Dean','Student','Proctor','Supervisor','Admin','President','Registrar','Employee']
+        Role_list=['StudentDean','Student','Proctor','Supervisor','Admin','President','Registrar','Employee']
         for i in range(8):
             if Role.objects.filter(R_name=Role_list[i]).exists():
                 user=Role.objects.get(R_name=Role_list[i])
@@ -191,8 +191,8 @@ def GrantRole(request):
             if searched =='Student':
                 role=Role.objects.get(R_name="Student")
                 id=role.id
-            elif searched == 'Student_Dean':
-                role=Role.objects.get(R_name="Student_Dean")
+            elif searched == 'StudentDean':
+                role=Role.objects.get(R_name="StudentDean")
                 id=role.id
             elif searched == 'Admin':
                 role=Role.objects.get(R_name="Admin")

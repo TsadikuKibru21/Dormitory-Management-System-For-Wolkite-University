@@ -62,7 +62,7 @@ def login_view(request):
                 #role=user.Role
                 role=str(user.Role)
                 
-                if role  == "Student_Dean":
+                if role  == "StudentDean":
                     request.session['username'] = username
                     for i in company:
                         request.session['company_name']=i.company_name

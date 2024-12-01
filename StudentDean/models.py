@@ -24,6 +24,10 @@ Floor=[
     ('Floor-6','Floor-6'),
     ('Floor-7','Floor-7'),
 ]
+STATUS=[
+    ('Connected','Connected'),
+    ('Not-Connected','Not-Connected'),  
+]
 
 class Block(models.Model):
     Block_name=models.CharField(max_length=100)
@@ -63,3 +67,21 @@ class AnnouncementStatus(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE)
     is_read = models.BooleanField(default=False)
+
+
+class AttendanceMachine(models.Model):
+    name = models.CharField(max_length=100)
+    ip = models.CharField(max_length=100)
+    port = models.IntegerField(default=4370)
+    block_id = models.ForeignKey(Block, on_delete=models.CASCADE)
+    status=models.CharField(max_length=255, choices=STATUS,default='Not-Connected')
+    def __str__(self):
+        return self.name
+    
+class Attendance(models.Model):
+    student_name = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_time = models.DateTimeField(auto_now=False,auto_now_add=False)
+    block_id = models.ForeignKey(Block, on_delete=models.CASCADE)
+    attendance_machine=models.ForeignKey(AttendanceMachine,on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
