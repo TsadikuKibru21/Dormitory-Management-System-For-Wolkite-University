@@ -310,13 +310,15 @@ def OverallInfo(request):
         for i in pl:
             try:
                 acc=UserAccount.objects.get(id=i.Stud_id_id)
-                usr=User.objects.get(id=acc.User_id)
-                if usr.Gender == 'M' or usr.Gender == 'male' or usr.Gender == 'Male':
-                    placed_male+=1
-                elif usr.Gender == 'F':
-                    placed_female+1
-                else:
-                    logging.info("################ get without gender #################")
+                usr1 = User.objects.filter(id=acc.User_id).exists()
+                if usr1:
+                    usr=User.objects.get(id=acc.User_id)
+                    if usr.Gender == 'M' or usr.Gender == 'male' or usr.Gender == 'Male':
+                        placed_male+=1
+                    elif usr.Gender == 'F':
+                        placed_female+1
+                    else:
+                        logging.info("################ get without gender #################")
             except UserAccount.DoesNotExist:
                 # Handle cases where the UserAccount does not exist
                 print(f"UserAccount for Stud_id {i.Stud_id_id} not found.")
